@@ -1,5 +1,7 @@
 /* This file is for your main application css. */
 @import "./phoenix.css";
+@import "./libs.scss";
+@import "./custom.scss";
 
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,
