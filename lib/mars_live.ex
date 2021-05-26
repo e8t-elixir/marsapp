@@ -1,2 +1,0 @@
-defmodule MarsLive do
-end
