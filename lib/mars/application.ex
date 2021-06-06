@@ -13,7 +13,16 @@ defmodule Mars.Application do
       MarsWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Mars.PubSub},
-      Mars.Presence,
+      MarsWeb.Presence,
+
+      # Toy
+
+      {Toy.Tracker.App01, [name: Toy.Tracker.App01, pubsub_server: Mars.PubSub]},
+
+      # %{
+      #   id: Toy.PubSub,
+      #   start: {Phoenix.PubSub, :start_link, [name: Toy.PubSub]}
+      # },
 
       # Start the Endpoint (http/https)
       MarsWeb.Endpoint

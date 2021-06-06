@@ -1,4 +1,4 @@
-defmodule Mars.Presence do
+defmodule MarsWeb.Presence do
   # application.ex
   # Start the PubSub system
   # {Phoenix.PubSub, name: Mars.PubSub},
