@@ -61,7 +61,9 @@ config :mars, MarsWeb.Endpoint,
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/mars_web/(live|views)/.*(ex)$",
-      ~r"lib/mars_web/templates/.*(eex)$"
+      ~r"lib/mars_web/templates/.*(eex)$",
+      ~r"lib/mars_live/.*(ex)$",
+      ~r"lib/mars_live/.*(eex)$"
     ]
   ]
 
@@ -74,3 +76,5 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+import_config("./dev.custom.exs")

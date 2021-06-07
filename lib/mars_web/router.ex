@@ -20,6 +20,12 @@ defmodule MarsWeb.Router do
     live "/", PageLive, :index
   end
 
+  scope "/chat01", MarsWeb do
+    pipe_through :browser
+
+    get "/", Chat01Controller, :index
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", MarsWeb do
   #   pipe_through :api

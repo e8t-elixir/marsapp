@@ -17,14 +17,20 @@ defmodule MarsWeb do
   and import those modules here.
   """
 
-  def controller do
+  def controller(opts) do
+    opts = Keyword.merge([namespace: MarsWeb], opts)
+
     quote do
-      use Phoenix.Controller, namespace: MarsWeb
+      use Phoenix.Controller, unquote(opts)
 
       import Plug.Conn
       import MarsWeb.Gettext
       alias MarsWeb.Router.Helpers, as: Routes
     end
+  end
+
+  def controller do
+    controller([])
   end
 
   def view do
@@ -98,5 +104,10 @@ defmodule MarsWeb do
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
+  end
+
+  defmacro __using__({which, opts}) do
+    opts |> IO.inspect(label: "MarsWeb")
+    apply(__MODULE__, which, [opts])
   end
 end
