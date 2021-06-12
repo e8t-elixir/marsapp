@@ -21,6 +21,9 @@ defmodule MarsWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+
+    resources "/products", ProductController
+    # live "/products", ProductListLive, :index
   end
 
   # Other scopes may use custom stacks.

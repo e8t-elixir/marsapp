@@ -1,0 +1,5 @@
+<h1>Listing Products</h1>
+
+<%= live_render @conn, MarsWeb.ProductListLive %>
+
+<span><%= link "New Product", to: Routes.product_path(@conn, :new) %></span>
