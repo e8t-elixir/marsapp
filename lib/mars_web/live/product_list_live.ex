@@ -14,6 +14,7 @@ defmodule MarsWeb.ProductListLive do
   end
 
   def render(assigns) do
-    MarsWeb.ProductView.render("product.html", assigns)
+    # templates/product/products.html.leex
+    MarsWeb.ProductView.render("products.html", assigns)
   end
 end

@@ -22,8 +22,8 @@ defmodule MarsWeb.Router do
 
     live "/", PageLive, :index
 
+    live "/products", ProductListLive
     resources "/products", ProductController
-    # live "/products", ProductListLive, :index
   end
 
   # Other scopes may use custom stacks.
