@@ -1,9 +1,19 @@
 defmodule MarsWeb.PageLive do
   use MarsWeb, :live_view
+  alias Mars.Accounts
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, query: "", results: %{})}
+  # def mount(_params, session, socket) do
+  def mount(_params, %{"user_token" => token}, socket) do
+    # IO.inspect(session, label: 'page_live_mount')
+    IO.inspect(socket, label: 'page_live_mount')
+
+    {:ok,
+     assign(socket,
+       query: "",
+       results: %{},
+       current_user: Accounts.get_user_by_session_token(token)
+     )}
   end
 
   @impl true

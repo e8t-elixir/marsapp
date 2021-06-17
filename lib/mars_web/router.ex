@@ -10,6 +10,7 @@ defmodule MarsWeb.Router do
     plug :put_root_layout, {MarsWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    # if there is a token,fetch current user
     plug :fetch_current_user
   end
 
@@ -19,8 +20,6 @@ defmodule MarsWeb.Router do
 
   scope "/", MarsWeb do
     pipe_through :browser
-
-    live "/", PageLive, :index
   end
 
   # Other scopes may use custom stacks.
@@ -61,6 +60,8 @@ defmodule MarsWeb.Router do
 
   scope "/", MarsWeb do
     pipe_through [:browser, :require_authenticated_user]
+
+    live "/", PageLive, :index
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
