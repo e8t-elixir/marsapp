@@ -20,10 +20,17 @@ defmodule MarsWeb.Router do
     live "/", PageLive, :index
   end
 
-  scope "/mars/", MarsLive do
+  scope "/api", MarsWeb do
+    pipe_through :api
+
+    get "/version", VersionController, :index
+  end
+
+  scope "/live/", MarsLive do
     pipe_through :browser
 
-    live "/", OnlineLive.Index, :index
+    live "/start", ThermostatLive.Index
+    live "/online", OnlineLive.Index, :index
   end
 
   # Other scopes may use custom stacks.

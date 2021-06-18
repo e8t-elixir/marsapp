@@ -1,6 +1,6 @@
 defmodule Toy.Channel.App01 do
   use MarsWeb, :channel
-  alias MarsWeb.Presence
+  alias Mars.Presence
 
   def join("head:topic", _params, socket) do
     send(self(), :after_join)

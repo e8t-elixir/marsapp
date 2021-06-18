@@ -13,7 +13,7 @@ defmodule Mars.Application do
       MarsWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Mars.PubSub},
-      MarsWeb.Presence,
+      Mars.Presence,
 
       # Toy
 
