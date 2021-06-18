@@ -18,12 +18,36 @@ defmodule MarsWeb.Router do
   end
 
   scope "/", MarsWeb do
+    import MarsWeb.Live.Router
+
     pipe_through :browser
 
     live "/", PageLive, :index
 
-    live "/products", ProductListLive
-    # resources "/products", ProductController
+    # liveless("/products", ProductListLive, :live_index)
+
+    # @phoenix_routes
+    # |> Enum.filter(fn route -> route.verb == :get and route.path == "/products" end)
+    # |> IO.inspect(label: "phoenix_routes")
+
+    # @phoenix_routes = cache_routes
+
+    resources "/products", ProductController
+    # new_line = __ENV__.line |> IO.inspect(label: "ENV line")
+
+    # old =
+    #   @phoenix_routes
+    #   |> Enum.filter(fn route ->
+    #     route.verb == :get and route.path == "/products" and
+    #       route.plug == MarsWeb.ProductController
+    #   end)
+    #   |> hd()
+
+    # # |> Map.get(:line)
+    # %Phoenix.Router.Route{old | line: new_line}
+    # |> IO.inspect(label: "phoenix_routes")
+
+    live "/tiny", TinyLive
   end
 
   # Other scopes may use custom stacks.

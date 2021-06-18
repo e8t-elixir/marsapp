@@ -1,5 +1,5 @@
 <%# <h3><%= @socket %1></h3> %>
-<h3><%= @name %></h3>
+<%# <h3><%= @name %1></h3> %>
 <table class='table card-body'>
   <thead>
     <tr>
@@ -10,5 +10,32 @@
     </tr>
   </thead>
   <tbody>
+    <%= for product <- @products do %>
+      <tr>
+        <td><%= product.name %></td>
+        <td><%= product.description %></td>
+        <td><%= product.price %></td>
+        <td class='w-1/12 whitespace-no-wrap'>
+          <span class='mr-1 text-sm'><%= link "show", to: Routes.product_path(@conn, :show, product) %></span>
+          <span class='mr-1 text-sm'><%= link "edit", to: Routes.product_path(@conn, :edit, product) %></span>
+          <span class='text-sm'><%= link "delete", to: Routes.product_path(@conn, :delete, product), method: :delete, data: [confirm: "Are you sure"] %></span>
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
+<nav class="border-t border-gray-200">
+  <ul class="flex my-2 text-blue-600">
+    <li>
+      <a class="px-2 py-2 <%= if @page_number <= 1, do: "pointer-events-none text-gray-600" %>" href="#" phx-click="nav" phx-value-page="<%= @page_number - 1 %>">Previous</a>
+    </li>
+    <%= for idx <- Enum.to_list(1..@total_pages) do %>
+    <li>
+      <a class="px-2 py-2 <%= if @page_number == idx, do: "pointer-events-none text-gray-600" %>" href="#" phx-click="nav" phx-value-page="<%= idx %>"><%= idx %></a>
+    </li>
+  <% end %>
+    <li>
+      <a class="px-2 py-2 <%= if @page_number >= @total_pages, do: "pointer-events-none text-gray-600" %>" href="#" phx-click="nav" phx-value-page="<%= @page_number + 1 %>">Next</a>
+    </li>
+  </ul>
+</nav>

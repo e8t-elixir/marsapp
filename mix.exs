@@ -33,6 +33,7 @@ defmodule Mars.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:scrivener_ecto, "~> 2.0"},
       {:bcrypt_elixir, "~> 2.0"},
       {:phx_gen_auth, "~> 0.7", only: [:dev], runtime: false},
       {:phoenix, "~> 1.5.9"},
