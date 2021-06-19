@@ -17,5 +17,7 @@ defmodule Mars.Products.Product do
     product
     |> cast(attrs, [:name, :description, :price])
     |> validate_required([:name, :description, :price])
+    |> validate_length(:name, min: 2)
+    |> validate_number(:price, greater_than: 0)
   end
 end

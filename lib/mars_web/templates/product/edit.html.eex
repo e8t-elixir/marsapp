@@ -1,5 +1,7 @@
 <h1>Edit Product</h1>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.product_path(@conn, :update, @product)) %>
+<%# <%= render "form.html", Map.put(assigns, :action, Routes.product_path(@conn, :update, @product)) %1> %>
+
+<%= live_render @conn, MarsWeb.ProductFormLive, session: %{"action" => Routes.product_path(@conn, :create), "csrf_token" => Plug.CSRFProtection.get_csrf_token()} %>
 
 <span><%= link "Back", to: Routes.product_path(@conn, :index) %></span>

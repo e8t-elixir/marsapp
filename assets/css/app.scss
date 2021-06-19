@@ -90,3 +90,8 @@
   display: block;
   margin: -1rem 0 2rem;
 }
+
+.btn:disabled, .btn.disabled, input[type="submit"]:disabled {
+  opacity: 65;
+  @apply pointer-events-none;
+}
