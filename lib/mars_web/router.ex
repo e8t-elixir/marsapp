@@ -24,6 +24,8 @@ defmodule MarsWeb.Router do
 
     live "/", PageLive, :index
 
+    get "/pwa01", PWA01Controller, :index
+
     # liveless("/products", ProductListLive, :live_index)
 
     # @phoenix_routes
