@@ -21,6 +21,8 @@ defmodule MarsWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+
+    get "/gh", GithubController, :index
   end
 
   # Other scopes may use custom stacks.
