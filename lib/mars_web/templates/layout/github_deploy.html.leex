@@ -1,0 +1,14 @@
+<div class="">
+  <div>
+  <%= @deploy_step %>
+  </div>
+  <hr />
+  <div class="">
+    <div>
+      <div>
+        <button phx-click="github_deploy" phx-value-myvar1="val1">Deploy to GitHub</button>
+      </div>
+      Status: <%= @deploy_step %>
+    </div>
+  </div>
+</div>

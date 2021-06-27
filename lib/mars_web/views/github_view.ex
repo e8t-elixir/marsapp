@@ -20,6 +20,9 @@ defmodule MarsWeb.GithubView do
       </div>
     </div>
     """
+
+    # Phoenix.View.render(__MODULE__, "github_deploy.html", assigns)
+    Phoenix.View.render(MarsWeb.LayoutView, "github_deploy.html", assigns)
   end
 
   # mount/3 
