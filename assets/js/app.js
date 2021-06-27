@@ -41,8 +41,8 @@ let initStream = async () => {
 
 let addUserConnection = (userUuid) => {
   if (users[userUuid] === undefined) {
-    user[userUuid] = {
-      peerConnection: null,
+    users[userUuid] = {
+      peerConn: null,
     };
   }
   return users;
@@ -53,15 +53,15 @@ let removeUserConnection = (userUuid) => {
   return users;
 };
 
-let google = { urls: "stun:stun.l.google.com:19302" };
-// let chat = { urls: "stun:littlechat.app:3478" };
+let stun = { urls: "stun:stun.l.google.com:19302" };
+// let stun = { urls: "stun:littlechat.app:3478" };
 
 // lv: liveview 的 this
 // fromUser: 其他 peer
 // 转发来的 offer
 let createPeerConnection = (lv, fromUser, offer) => {
   let newPeerConn = new RTCPeerConnection({
-    iceServers: [google],
+    iceServers: [stun],
   });
   users[fromUser].peerConn = newPeerConn;
   localStream
@@ -114,6 +114,7 @@ let createPeerConnection = (lv, fromUser, offer) => {
 };
 
 let Hooks = {};
+
 Hooks.JoinCall = {
   mounted() {
     initStream();
@@ -122,12 +123,57 @@ Hooks.JoinCall = {
 
 // 在 html data-user-uuid 中获取 uuid
 
-Hooks.InitUer = {
+Hooks.InitUser = {
   mounted() {
     addUserConnection(this.el.dataset.userUuid);
   },
   destroyed() {
     removeUserConnection(this.el.dataset.userUuid);
+  },
+};
+
+Hooks.HandleOfferRequest = {
+  mounted() {
+    let fromUser = this.el.dataset.fromUserUuid;
+    console.log(`new offer request from: ${fromUser}`);
+    createPeerConnection(this, fromUser);
+  },
+};
+
+Hooks.HandleOffer = {
+  mounted() {
+    let data = this.el.dataset;
+    let fromUser = data.fromUserUuid;
+    let sdp = data.sdp;
+
+    if (sdp != "") {
+      console.log(`new sdp OFFER from: ${fromUser} ${sdp}`);
+      createPeerConnection(this, fromUser, sdp);
+    }
+  },
+};
+Hooks.HandleAnswer = {
+  mounted() {
+    let data = this.el.dataset;
+    let fromUser = data.fromUserUuid;
+    let sdp = data.sdp;
+    let peerConn = users[fromUser].peerConn;
+    if (sdp != "") {
+      console.log(`new sdp ANSWER from: ${fromUser} ${sdp}`);
+      peerConn.setRemoteDescription({ type: "answer", sdp });
+    }
+  },
+};
+
+Hooks.HandleIceCandidateOffer = {
+  mounted() {
+    let data = this.el.dataset;
+    let fromUser = data.fromUserUuid;
+    let iceCandidate = JSON.parse(data.iceCandidate);
+    let peerConn = users[fromUser].peerConn;
+
+    console.log(`new ice candidate from: ${fromUser} ${iceCandidate}`);
+    peerConn.addIceCandidate(iceCandidate);
   },
 };
 
