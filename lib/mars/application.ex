@@ -13,6 +13,7 @@ defmodule Mars.Application do
       MarsWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Mars.PubSub},
+      MarsWeb.Presence,
       # Start the Endpoint (http/https)
       MarsWeb.Endpoint
       # Start a worker by calling: Mars.Worker.start_link(arg)

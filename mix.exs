@@ -20,7 +20,7 @@ defmodule Mars.MixProject do
   def application do
     [
       mod: {Mars.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :crypto]
     ]
   end
 
@@ -33,6 +33,7 @@ defmodule Mars.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:elixir_uuid, "~> 1.2"},
       {:bcrypt_elixir, "~> 2.0"},
       {:phx_gen_auth, "~> 0.7", only: [:dev], runtime: false},
       {:phoenix, "~> 1.5.9"},

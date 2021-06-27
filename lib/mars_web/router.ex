@@ -23,6 +23,12 @@ defmodule MarsWeb.Router do
     live "/", PageLive, :index
   end
 
+  scope "/room", MarsWeb.Room, as: :room do
+    pipe_through :browser
+    live "/new", NewLive, :new
+    live "/:slug", ShowLive, :show
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", MarsWeb do
   #   pipe_through :api
