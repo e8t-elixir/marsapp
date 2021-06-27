@@ -18,7 +18,13 @@ defmodule MarsWeb.Room.ShowLive do
     <% end %>
     </ul>
 
-    <video id='local-video' playsinline autoplay muted width='600px'></video>
+    <div class='streams'>
+      <video id='local-video' playsinline autoplay muted width='600px'></video>
+      <hr />
+      <%= for uuid <- @connected_users do %>
+        <video id="video-remote-<%= uuid %>" data-user-uuid="<%= uuid %>" playsinline autoplay phx-hook="InitUser"></video>
+      <% end %>
+    </div>
     <button id='join-call' class='button' phx-hook='JoinCall'>Join Call</button>
     """
   end

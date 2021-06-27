@@ -23,6 +23,7 @@ let csrfToken = document
 
 // const localStream
 let localStream;
+let users = {};
 
 let initStream = async () => {
   try {
@@ -38,12 +39,98 @@ let initStream = async () => {
   }
 };
 
+let addUserConnection = (userUuid) => {
+  if (users[userUuid] === undefined) {
+    user[userUuid] = {
+      peerConnection: null,
+    };
+  }
+  return users;
+};
+
+let removeUserConnection = (userUuid) => {
+  delete users[userUuid];
+  return users;
+};
+
+let google = { urls: "stun:stun.l.google.com:19302" };
+// let chat = { urls: "stun:littlechat.app:3478" };
+
+// lv: liveview 的 this
+// fromUser: 其他 peer
+// 转发来的 offer
+let createPeerConnection = (lv, fromUser, offer) => {
+  let newPeerConn = new RTCPeerConnection({
+    iceServers: [google],
+  });
+  users[fromUser].peerConn = newPeerConn;
+  localStream
+    .getTracks()
+    .forEach((track) => newPeerConn.addTrack(track, localStream));
+
+  if (offer !== undefined) {
+    // create answer
+    newPeerConn.setRemoteDescription({ type: "offer", sdp: offer });
+    newPeerConn
+      .createAnswer()
+      .then((answer) => {
+        newPeerConn.setLocalDescription(answer);
+        console.log(`Sending ANSWER to requester: ${answer}`);
+        lv.pushEvent("new_answer", { toUser: fromUser, description: answer });
+      })
+      .catch(console.error);
+  }
+
+  newPeerConn.onicecandidate = async ({ candidate }) => {
+    // fromUser 会成为新的 toUser 需要将 candidate 发送回来
+    lv.pushEvent("new_ice_candidate", { toUser: fromUser, candidate });
+  };
+
+  // 创建 peer connection 时不添加 onnegotiationneeded 回调，避免 chrome webrtc 实现 bug
+  if (offer === undefined) {
+    newPeerConn.onnegotiationneeded = async () => {
+      try {
+        newPeerConn
+          .createOffer()
+          .then((offer) => {
+            newPeerConn.setLocalDescription(offer);
+            console.log(`Sending OFFER to the requester: ${offer}`);
+            lv.pushEvent("new_offer", { toUser: fromUser, description: offer });
+          })
+          .catch(console.error);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+  }
+
+  // 添加 stream 到对应 video tag
+  newPeerConn.ontrack = async (event) => {
+    console.log(`Track received: ${event}`);
+    document.getElementById(`video-remote-${fromUser}`).srcObject =
+      event.streams[0];
+  };
+  return newPeerConn;
+};
+
 let Hooks = {};
 Hooks.JoinCall = {
   mounted() {
     initStream();
   },
 };
+
+// 在 html data-user-uuid 中获取 uuid
+
+Hooks.InitUer = {
+  mounted() {
+    addUserConnection(this.el.dataset.userUuid);
+  },
+  destroyed() {
+    removeUserConnection(this.el.dataset.userUuid);
+  },
+};
+
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
   hooks: Hooks,
