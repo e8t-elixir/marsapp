@@ -31,10 +31,11 @@ defmodule MarsWeb.UserAuth do
 
     conn
     |> renew_session()
+    # => for view
     |> put_session(:user_token, token)
-    # for liveview
+    # => for liveview
     |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
-    # remember me
+    # => remember me
     |> maybe_write_remember_me_cookie(token, params)
     |> redirect(to: user_return_to || signed_in_path(conn))
   end
